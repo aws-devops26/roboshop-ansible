@@ -1,5 +1,0 @@
-- name: ping playbook
-  hosts: mongodb
-  tasks:
-  - name: ping the server
-    ansible.builtin.ping:
