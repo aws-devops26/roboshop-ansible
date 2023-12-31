@@ -1,5 +1,5 @@
-- name: catalogue
-  hosts: catalogue
+- name: user
+  hosts: user
   become: yes
   tasks:
 
@@ -25,14 +25,14 @@
       path: /app
       state: directory
 
-  - name: download catalogue application
-    ansible.builtin.get_url: https://roboshop-builds.s3.amazonaws.com/catalogue.zip
+  - name: download user application
+    ansible.builtin.get_url: https://roboshop-builds.s3.amazonaws.com/user.zip
      dest: temp
      remote-src: yes
 
-  - name: extract catalogue application
+  - name: extract user application
     ansible.builtin.unarchive:
-     src : /tmp/catalogue.zip
+     src : /tmp/user.zip
      dest: /app
      remote_src: yes
 
@@ -41,11 +41,10 @@
       args:
         chdir: /app
 
-
-  - name: copy catalogue service
+  - name: copy user service
     ansible.builtin.copy:
-      src: catalogue.service
-      dest: /etc/systemd/system/catalogue.service
+      src: user.service
+      dest: /etc/systemd/system/user.service
 
   - name: deamon reload and start
     ansible.builtin.systemd_service:
@@ -61,19 +60,16 @@
      name: mongodb-org-shell
      state: present
 
-  - name: get the categories count
-    ansible.builtin.command: mongo --host mongodb.awssrivalli.online --quiet --eval 'db=db.getsibilingDB("catalogue"); db.products.count()'
-      register: product_count
+  - name: get the user count
+    ansible.builtin.command: mongo --host mongodb.awssrivalli.online --quiet --eval 'db=db.getsibilingDB("user"); db.products.count()'
+      register: user_count
 
-  - name: load catalogue data
-    ansible.builtin.command: mongo --host mongodb.awssrivalli.online </app/schema/catalogue.js
+  - name: load user data
+    ansible.builtin.command: mongo --host mongodb.awssrivalli.online </app/schema/user.js
       when: product_count.stdout == "0"
 
-  - name: start and enable catalogue
+  - name: start and enable user
     ansible.builtin.service:
-      name: catalogue
+      name: user
       state: restarted
       enabled: yes
-
-
-  
