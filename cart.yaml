@@ -27,7 +27,7 @@
 
   - name: download cart application
     ansible.builtin.get_url: https://roboshop-builds.s3.amazonaws.com cart.zip
-     dest: temp
+     dest: /tmp
      remote-src: yes
 
   - name: extract cart application
