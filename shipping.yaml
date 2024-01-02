@@ -25,9 +25,10 @@
        state: directory
 
    - name: download shipping application
-     ansible.builtin.get_url: https://roboshop-builds.s3.amazonaws.com/shipping.zip
-      dest: temp
-      remote-src: yes
+     ansible.builtin.get_url:
+      url: https://roboshop-builds.s3.amazonaws.com/shipping.zip
+      dest: /tmp
+    
 
    - name: extract shipping application
      ansible.builtin.unarchive:
