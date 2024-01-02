@@ -64,11 +64,11 @@
   - name: get the categories count
     ansible.builtin.command:  mongo --host mongodb.awssrivalli.online --quiet --eval 'db = db.
     getSiblingDB("catalogue"); db.products.count()'
-    register: products_count
+    register: product_count
 
   - name: load catalogue data
     ansible.builtin.command: mongo --host mongodb.awssrivalli.online </app/schema/catalogue.js
-      when: products_count.stdout == "0"
+      when: product_count.stdout == "0"
 
   - name: start and enable catalogue
     ansible.builtin.service:
