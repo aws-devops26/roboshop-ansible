@@ -62,7 +62,7 @@
      state: present
 
   - name: get the user count
-    ansible.builtin.command: mongo --host mongodb.awssrivalli.online --quiet --eval 'db=db.getsibilingDB("user"); db.products.count()'
+    ansible.builtin.command: mongo --host mongodb.awssrivalli.online --quiet --eval 'db = db.getSibilingDB("user"); db.products.count()'
       register: user_count
 
   - name: load user data
