@@ -13,7 +13,7 @@
 
   - name: create roboshop cart
     ansible.builtin.cart:
-      name: roboshop
+     name: roboshop
 
   - name: Recursively remove app directory
     ansible.builtin.file:
