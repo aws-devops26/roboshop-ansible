@@ -27,9 +27,9 @@
 
   - name: download user application
     ansible.builtin.get_url: 
-    url: https://roboshop-builds.s3.amazonaws.com/user.zip
+     url: https://roboshop-builds.s3.amazonaws.com/user.zip
      dest: /tmp
-     remote-src: yes
+     
 
   - name: extract user application
     ansible.builtin.unarchive:
