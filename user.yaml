@@ -26,8 +26,9 @@
       state: directory
 
   - name: download user application
-    ansible.builtin.get_url: https://roboshop-builds.s3.amazonaws.com/user.zip
-     dest: temp
+    ansible.builtin.get_url: 
+    url: https://roboshop-builds.s3.amazonaws.com/user.zip
+     dest: /tmp
      remote-src: yes
 
   - name: extract user application
