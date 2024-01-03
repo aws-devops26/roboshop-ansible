@@ -53,7 +53,7 @@
       daemon_reload: true
 
   
-  - name: start and enable cart
+  - name: start and enable payment
     ansible.builtin.service:
       name: payment
       state: restarted
