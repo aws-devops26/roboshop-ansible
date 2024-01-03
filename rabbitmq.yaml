@@ -2,12 +2,11 @@
   hosts: rabbitmq
   become: yes
   tasks:
-
-  - name: configure yum erlandg repos
-    ansible.builtin.command: curl -s https://packagecloud.io/install/repositories/rabbitmq/erlang/script.rpm.sh | bash
+  - name: configure yum erlang repos
+    ansible.builtin.shell: curl -s https://packagecloud.io/install/repositories/rabbitmq/erlang/script.rpm.sh | bash
 
   - name: configure yum rabbitmq repos
-    ansible.builtin.command: curl -s https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.rpm.sh | bash
+    ansible.builtin.shell: curl -s https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.rpm.sh | bash
 
   - name: install rabbitmq server
     ansible.builtin.dnf:
@@ -25,4 +24,5 @@
 
   - name: set permissions
     ansible.builtin.command: rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
-    
+
+  
