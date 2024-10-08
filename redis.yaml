@@ -14,6 +14,7 @@
     ansible.builtin.dnf:
       name: redis
       state: present
+      disable_gpg_check: true
 
   - name: allow remote connections
     ansible.builtin.replace:
