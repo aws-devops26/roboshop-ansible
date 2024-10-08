@@ -65,7 +65,7 @@
       msg: " users count : {{user_count}}"
 
   - name: load user data
-    ansible.builtin.command: mongodb.awssrivalli.online </app/schema/user.js
+    ansible.builtin.command: mongodb.awssrivalli.online < /app/schema/user.js
     when: user_count.stdout != "0"
 
   - name: start and enable user
