@@ -2,24 +2,19 @@
   hosts: user
   become: yes
   tasks:
-  - name: disable old nodejs and enable nodejs
-    ansible.builtin.shell: dnf module disable nodejs -y ; dnf module enable nodejs:18 -y
+  - name: disable old js and enable nodejs:18
+    ansible.builtin.shell: dnf module disable nodejs -y; dnf module enable nodejs:18 -y
 
-  - name: Install nodejs
+  - name: install nodejs
     ansible.builtin.dnf:
-      name: nodejs 
+      name: nodejs
       state: present
 
-  - name: create roboshop user
+  - name: creating user roboshop
     ansible.builtin.user:
       name: roboshop
 
-  - name: Recursively remove app directory
-    ansible.builtin.file:
-      path: /app
-      state: absent
-
-  - name: create app directory
+  - name: creating app directory
     ansible.builtin.file:
       path: /app
       state: directory
@@ -35,46 +30,47 @@
       dest: /app
       remote_src: yes
 
-  - name: Install dependencies
-    ansible.builtin.command: npm install
-    args:
-      chdir: /app
+  - name: download dependencies
+    ansible.builrin.command: npm install
+      args:
+        chdir: /app
 
-  - name: Copy user service
+  - name: copy user service
     ansible.builtin.copy:
       src: user.service
       dest: /etc/systemd/system/user.service
 
-  - name: deamon realod and start
+  - name: demon reload and start
     ansible.builtin.systemd_service:
-      daemon_reload: true
+      demon_reload: true
 
-  # let's start after the data is loaded
+  # lets start after the data is loaded
 
-  - name: Copy mongodb repo
+  - name: copy mongodb repo
     ansible.builtin.copy:
       src: mongodb.repo
-      dest: /etc/yum.repos.d/mongodb.repo
+      dest: /etc/yum.repos.d/mongo.repo
 
-  - name: Install mongodb client
+  - name: install mongodb client
     ansible.builtin.package:
       name: mongodb-org-shell
       state: present
 
   - name: get the users count
-    ansible.builtin.command:  mongo --host mongodb.awssrivalli.online --quiet --eval 'db = db.getSiblingDB("users"); db.users.count()'
-    register: user_count
+    ansible.builtin.command: mongo --host mongodb.awssrivalli.online --quiet --eval 'db=db.getsibilingDB("user");db.user.count()'
+      register: user_count
 
-  # - name: print the count
-  #   ansible.builtin.debug:
-  #     msg: "product count: {{user_count}}"
+  - name: print the count
+    ansible.builtin.debug:
+      msg: " users count : {{user_count}}"
 
   - name: load user data
-    ansible.builtin.command: mongo --host mongodb.awssrivalli.online < /app/schema/user.js
-    when: user_count.stdout == "0" # keep double quotes
+    ansible.builtin.command: mongodb.awssrivalli.online </app/schema/user.js
+      when: user_count.stdout == "0"
 
   - name: start and enable user
     ansible.builtin.service:
       name: user
       state: restarted
       enabled: yes
+
