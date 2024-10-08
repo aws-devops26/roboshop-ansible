@@ -57,8 +57,8 @@
       state: present
 
   - name: get the users count
-    ansible.builtin.command: mongo --host mongodb.awssrivalli.online --quiet --eval 'db=db.getsibilingDB("user");db.user.count()'
-      register: user_count
+    ansible.builtin.command: mongo --host mongodb.awssrivalli.online --quiet --eval 'db = db.getSiblingDB("catalogue"); db.products.count()'
+    register: user_count
 
   - name: print the count
     ansible.builtin.debug:
@@ -66,7 +66,7 @@
 
   - name: load user data
     ansible.builtin.command: mongodb.awssrivalli.online </app/schema/user.js
-      when: user_count.stdout == "0"
+    when: user_count.stdout != "0"
 
   - name: start and enable user
     ansible.builtin.service:
