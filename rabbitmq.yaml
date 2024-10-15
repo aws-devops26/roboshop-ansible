@@ -15,7 +15,7 @@
 
   - name: start and enable rabbitmq
     ansible.builtin.service:
-      name: rabbitmq-server
+      name: rabbitmq
       state: restarted
       enabled: yes
 
