@@ -1,4 +1,4 @@
-- name: install shipping component
+- name: installing shipping component
   hosts: shipping
   become: yes
   vars:
@@ -9,14 +9,9 @@
       name: maven
       state: present
 
-  - name: create roboshop user
+  - name: roboshop user creation
     ansible.builtin.user:
       name: roboshop
-
-  - name: Recursively remove app directory
-    ansible.builtin.file:
-      path: /app
-      state: absent
 
   - name: create app directory
     ansible.builtin.file:
@@ -34,7 +29,7 @@
       dest: /app
       remote_src: yes
 
-  - name: install dependencies
+  - name: download dependencies
     ansible.builtin.command: mvn clean package
     args:
       chdir: /app
@@ -49,7 +44,7 @@
       src: shipping.service
       dest: /etc/systemd/system/shipping.service
 
-  - name: deamon realod and start
+  - name: daemon reload start
     ansible.builtin.systemd_service:
       daemon_reload: true
 
@@ -58,16 +53,16 @@
       name: mysql
       state: present
 
-  - name: check cities schema exists or not
-    ansible.builtin.command:  mysql -h mysql.awssrivalli.online -uroot -p{{mysql_password}} -sN -e "SELECT COUNT(*) FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'cities'"
+  - name: check cities schema exist or not
+    ansible.builtin.shell: mysql -h <MYSQL-SERVER-IPADDRESS> -uroot -p{{mysql_password}} -sN -e "SELECT COUNT(*) FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'mysql'"
     register: schema
 
   - name: print output
     ansible.builtin.debug:
-      msg: "schema output: {{schema}}"
+      msg: "schema output is: {{schema}}"
 
   - name: load cities data
-    ansible.builtin.shell: "mysql -h mysql.awssrivalli.online -uroot -p{{mysql_password}}  < /app/schema/shipping.sql"
+    ansible.builtin.shell: "mysql -h mysql.awssrivalli.online -uroot -p{{mysql_password}} < /app/schema/shipping.sql"
     when: schema.stdout != "1"
 
   - name: start and enable shipping
@@ -75,3 +70,6 @@
       name: shipping
       state: restarted
       enabled: yes
+      
+      
+
