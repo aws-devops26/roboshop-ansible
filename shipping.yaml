@@ -54,7 +54,8 @@
       state: present
 
   - name: check cities schema exist or not
-    ansible.builtin.shell: mysql -h <MYSQL-SERVER-IPADDRESS> -uroot -p{{mysql_password}} -sN -e "SELECT COUNT(*) FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'mysql'"
+    ansible.builtin.shell: mysql -h mysql.awssrivalli.online -uroot -p{{mysql_password}}
+     -sN -e "SELECT COUNT(*) FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'mysql'"
     register: schema
 
   - name: print output
