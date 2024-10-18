@@ -13,7 +13,7 @@ Environment=AMQP_USER=roboshop
 Environment=AMQP_PASS=roboshop123
 
 ExecStart=/usr/local/bin/uwsgi --ini payment.ini
-ExecStop=/bin/kill -9 $MAINPID
+ExecStop=/bin/kill -9 $MAINPID96
 SyslogIdentifier=payment
 
 [Install]
